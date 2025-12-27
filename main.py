@@ -445,6 +445,12 @@ SELECT DATE('now');""", language="sql")
 st.markdown("---")
 st.markdown("""
     <div style='text-align: center; color: #6c757d; padding: 1rem;'>
-        <p>Made with ❤️ by TCK | 支援 SQLite 標準語法</p>
+        <p>
+            Made with ❤️ by
+            <a href="https://medium.com/@hichengkang" target="_blank" style="color:#6c757d; text-decoration:none; font-weight:600;">
+                TCK
+            </a>
+            | 支援 SQLite 標準語法
+        </p>
     </div>
     """, unsafe_allow_html=True)
