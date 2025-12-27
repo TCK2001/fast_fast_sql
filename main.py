@@ -353,358 +353,358 @@ else:
         - CASE WHEN
         """)
 
-# 頁尾
-st.markdown("---")
+    # 頁尾
+    st.markdown("---")
 
-# Oracle vs SQLite 語法比較
-with st.expander("📚 Oracle vs SQLite 語法比較", expanded=False):
-    st.markdown("### 🔄 主要語法差異對照表")
-    
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📅 日期函數", "🔢 字串函數", "📊 分析函數", "🔀 其他函數", "💡 常見範例"])
-    
-    with tab1:
-        st.markdown("#### 日期與時間函數")
+    # Oracle vs SQLite 語法比較
+    with st.expander("📚 Oracle vs SQLite 語法比較", expanded=False):
+        st.markdown("### 🔄 主要語法差異對照表")
         
-        comparison_date = pd.DataFrame({
-            '功能': [
-                '當前日期',
-                '當前日期時間',
-                '日期格式化',
-                '日期加減',
-                '日期差異（天）',
-                '提取年份',
-                '提取月份',
-                '提取日',
-                '月初',
-                '月末',
-                '季度',
-                '星期幾'
-            ],
-            'Oracle': [
-                'SYSDATE',
-                'SYSTIMESTAMP',
-                "TO_CHAR(SYSDATE, 'YYYY-MM-DD')",
-                "SYSDATE + 7 或 ADD_MONTHS(SYSDATE, 1)",
-                "日期1 - 日期2",
-                "EXTRACT(YEAR FROM SYSDATE)",
-                "EXTRACT(MONTH FROM SYSDATE)",
-                "EXTRACT(DAY FROM SYSDATE)",
-                "TRUNC(SYSDATE, 'MM')",
-                "LAST_DAY(SYSDATE)",
-                "TO_CHAR(SYSDATE, 'Q')",
-                "TO_CHAR(SYSDATE, 'D')"
-            ],
-            'SQLite': [
-                "DATE('now')",
-                "DATETIME('now')",
-                "STRFTIME('%Y-%m-%d', 'now')",
-                "DATE('now', '+7 days') 或 DATE('now', '+1 month')",
-                "JULIANDAY(日期1) - JULIANDAY(日期2)",
-                "STRFTIME('%Y', 'now')",
-                "STRFTIME('%m', 'now')",
-                "STRFTIME('%d', 'now')",
-                "DATE('now', 'start of month')",
-                "DATE('now', 'start of month', '+1 month', '-1 day')",
-                "CAST((STRFTIME('%m', 'now') + 2) / 3 AS INTEGER)",
-                "STRFTIME('%w', 'now')"
-            ]
-        })
-        st.dataframe(comparison_date, use_container_width=True)
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["📅 日期函數", "🔢 字串函數", "📊 分析函數", "🔀 其他函數", "💡 常見範例"])
         
-        st.markdown("##### 📝 實際範例：")
-        st.code("""
--- Oracle: 查詢最近 30 天的資料
-SELECT * FROM employees 
-WHERE hire_date >= SYSDATE - 30;
+        with tab1:
+            st.markdown("#### 日期與時間函數")
+            
+            comparison_date = pd.DataFrame({
+                '功能': [
+                    '當前日期',
+                    '當前日期時間',
+                    '日期格式化',
+                    '日期加減',
+                    '日期差異（天）',
+                    '提取年份',
+                    '提取月份',
+                    '提取日',
+                    '月初',
+                    '月末',
+                    '季度',
+                    '星期幾'
+                ],
+                'Oracle': [
+                    'SYSDATE',
+                    'SYSTIMESTAMP',
+                    "TO_CHAR(SYSDATE, 'YYYY-MM-DD')",
+                    "SYSDATE + 7 或 ADD_MONTHS(SYSDATE, 1)",
+                    "日期1 - 日期2",
+                    "EXTRACT(YEAR FROM SYSDATE)",
+                    "EXTRACT(MONTH FROM SYSDATE)",
+                    "EXTRACT(DAY FROM SYSDATE)",
+                    "TRUNC(SYSDATE, 'MM')",
+                    "LAST_DAY(SYSDATE)",
+                    "TO_CHAR(SYSDATE, 'Q')",
+                    "TO_CHAR(SYSDATE, 'D')"
+                ],
+                'SQLite': [
+                    "DATE('now')",
+                    "DATETIME('now')",
+                    "STRFTIME('%Y-%m-%d', 'now')",
+                    "DATE('now', '+7 days') 或 DATE('now', '+1 month')",
+                    "JULIANDAY(日期1) - JULIANDAY(日期2)",
+                    "STRFTIME('%Y', 'now')",
+                    "STRFTIME('%m', 'now')",
+                    "STRFTIME('%d', 'now')",
+                    "DATE('now', 'start of month')",
+                    "DATE('now', 'start of month', '+1 month', '-1 day')",
+                    "CAST((STRFTIME('%m', 'now') + 2) / 3 AS INTEGER)",
+                    "STRFTIME('%w', 'now')"
+                ]
+            })
+            st.dataframe(comparison_date, use_container_width=True)
+            
+            st.markdown("##### 📝 實際範例：")
+            st.code("""
+    -- Oracle: 查詢最近 30 天的資料
+    SELECT * FROM employees 
+    WHERE hire_date >= SYSDATE - 30;
 
--- SQLite: 查詢最近 30 天的資料
-SELECT * FROM employees 
-WHERE hire_date >= DATE('now', '-30 days');
+    -- SQLite: 查詢最近 30 天的資料
+    SELECT * FROM employees 
+    WHERE hire_date >= DATE('now', '-30 days');
 
--- Oracle: 計算在職天數
-SELECT employee_name, SYSDATE - hire_date AS days_employed
-FROM employees;
+    -- Oracle: 計算在職天數
+    SELECT employee_name, SYSDATE - hire_date AS days_employed
+    FROM employees;
 
--- SQLite: 計算在職天數
-SELECT employee_name, JULIANDAY('now') - JULIANDAY(hire_date) AS days_employed
-FROM employees;
-        """, language="sql")
-    
-    with tab2:
-        st.markdown("#### 字串處理函數")
+    -- SQLite: 計算在職天數
+    SELECT employee_name, JULIANDAY('now') - JULIANDAY(hire_date) AS days_employed
+    FROM employees;
+            """, language="sql")
         
-        comparison_string = pd.DataFrame({
-            '功能': [
-                '字串連接',
-                '轉大寫',
-                '轉小寫',
-                '字串長度',
-                '去除空格',
-                '子字串',
-                '字串替換',
-                '搜尋位置',
-                '左側截取',
-                '右側截取',
-                '填充',
-                'NULL 處理'
-            ],
-            'Oracle': [
-                "字串1 || 字串2 或 CONCAT()",
-                "UPPER(字串)",
-                "LOWER(字串)",
-                "LENGTH(字串)",
-                "TRIM(字串)",
-                "SUBSTR(字串, 起始, 長度)",
-                "REPLACE(字串, 舊值, 新值)",
-                "INSTR(字串, 搜尋值)",
-                "SUBSTR(字串, 1, n)",
-                "SUBSTR(字串, -n)",
-                "LPAD(字串, 長度, 填充字元)",
-                "NVL(欄位, 預設值)"
-            ],
-            'SQLite': [
-                "字串1 || 字串2",
-                "UPPER(字串)",
-                "LOWER(字串)",
-                "LENGTH(字串)",
-                "TRIM(字串)",
-                "SUBSTR(字串, 起始, 長度)",
-                "REPLACE(字串, 舊值, 新值)",
-                "INSTR(字串, 搜尋值)",
-                "SUBSTR(字串, 1, n)",
-                "SUBSTR(字串, -n)",
-                "PRINTF('%0' || 長度 || 'd', 數字)",
-                "IFNULL(欄位, 預設值) 或 COALESCE()"
-            ]
-        })
-        st.dataframe(comparison_string, use_container_width=True)
+        with tab2:
+            st.markdown("#### 字串處理函數")
+            
+            comparison_string = pd.DataFrame({
+                '功能': [
+                    '字串連接',
+                    '轉大寫',
+                    '轉小寫',
+                    '字串長度',
+                    '去除空格',
+                    '子字串',
+                    '字串替換',
+                    '搜尋位置',
+                    '左側截取',
+                    '右側截取',
+                    '填充',
+                    'NULL 處理'
+                ],
+                'Oracle': [
+                    "字串1 || 字串2 或 CONCAT()",
+                    "UPPER(字串)",
+                    "LOWER(字串)",
+                    "LENGTH(字串)",
+                    "TRIM(字串)",
+                    "SUBSTR(字串, 起始, 長度)",
+                    "REPLACE(字串, 舊值, 新值)",
+                    "INSTR(字串, 搜尋值)",
+                    "SUBSTR(字串, 1, n)",
+                    "SUBSTR(字串, -n)",
+                    "LPAD(字串, 長度, 填充字元)",
+                    "NVL(欄位, 預設值)"
+                ],
+                'SQLite': [
+                    "字串1 || 字串2",
+                    "UPPER(字串)",
+                    "LOWER(字串)",
+                    "LENGTH(字串)",
+                    "TRIM(字串)",
+                    "SUBSTR(字串, 起始, 長度)",
+                    "REPLACE(字串, 舊值, 新值)",
+                    "INSTR(字串, 搜尋值)",
+                    "SUBSTR(字串, 1, n)",
+                    "SUBSTR(字串, -n)",
+                    "PRINTF('%0' || 長度 || 'd', 數字)",
+                    "IFNULL(欄位, 預設值) 或 COALESCE()"
+                ]
+            })
+            st.dataframe(comparison_string, use_container_width=True)
+            
+            st.markdown("##### 📝 實際範例：")
+            st.code("""
+    -- Oracle: 字串連接
+    SELECT employee_name || ' - ' || department AS full_info FROM employees;
+
+    -- SQLite: 字串連接（相同）
+    SELECT employee_name || ' - ' || department AS full_info FROM employees;
+
+    -- Oracle: NULL 處理
+    SELECT NVL(phone, '未提供') AS phone FROM employees;
+
+    -- SQLite: NULL 處理
+    SELECT IFNULL(phone, '未提供') AS phone FROM employees;
+            """, language="sql")
         
-        st.markdown("##### 📝 實際範例：")
-        st.code("""
--- Oracle: 字串連接
-SELECT employee_name || ' - ' || department AS full_info FROM employees;
+        with tab3:
+            st.markdown("#### 分析函數（視窗函數）")
+            
+            comparison_analytic = pd.DataFrame({
+                '功能': [
+                    '行號',
+                    '排名',
+                    '密集排名',
+                    '百分位排名',
+                    '前一行',
+                    '後一行',
+                    '第一個值',
+                    '最後一個值',
+                    '累計總和',
+                    '移動平均',
+                    '分組',
+                    '中位數'
+                ],
+                'Oracle': [
+                    "ROW_NUMBER() OVER (...)",
+                    "RANK() OVER (...)",
+                    "DENSE_RANK() OVER (...)",
+                    "PERCENT_RANK() OVER (...)",
+                    "LAG(欄位, n) OVER (...)",
+                    "LEAD(欄位, n) OVER (...)",
+                    "FIRST_VALUE(欄位) OVER (...)",
+                    "LAST_VALUE(欄位) OVER (...)",
+                    "SUM(欄位) OVER (ORDER BY ...)",
+                    "AVG(欄位) OVER (ROWS BETWEEN n PRECEDING AND CURRENT ROW)",
+                    "NTILE(n) OVER (...)",
+                    "MEDIAN(欄位)"
+                ],
+                'SQLite': [
+                    "ROW_NUMBER() OVER (...)",
+                    "RANK() OVER (...)",
+                    "DENSE_RANK() OVER (...)",
+                    "PERCENT_RANK() OVER (...)",
+                    "LAG(欄位, n) OVER (...)",
+                    "LEAD(欄位, n) OVER (...)",
+                    "FIRST_VALUE(欄位) OVER (...)",
+                    "LAST_VALUE(欄位) OVER (...)",
+                    "SUM(欄位) OVER (ORDER BY ...)",
+                    "AVG(欄位) OVER (ROWS BETWEEN n PRECEDING AND CURRENT ROW)",
+                    "NTILE(n) OVER (...)",
+                    "使用 PERCENTILE_CONT() 或自定義"
+                ]
+            })
+            st.dataframe(comparison_analytic, use_container_width=True)
+            
+            st.markdown("##### 📝 實際範例：")
+            st.code("""
+    -- Oracle & SQLite: 部門內薪資排名（語法相同！）
+    SELECT 
+        employee_name,
+        department,
+        salary,
+        RANK() OVER (PARTITION BY department ORDER BY salary DESC) as dept_rank
+    FROM employees;
 
--- SQLite: 字串連接（相同）
-SELECT employee_name || ' - ' || department AS full_info FROM employees;
-
--- Oracle: NULL 處理
-SELECT NVL(phone, '未提供') AS phone FROM employees;
-
--- SQLite: NULL 處理
-SELECT IFNULL(phone, '未提供') AS phone FROM employees;
-        """, language="sql")
-    
-    with tab3:
-        st.markdown("#### 分析函數（視窗函數）")
+    -- Oracle & SQLite: 累計總和（語法相同！）
+    SELECT 
+        date,
+        amount,
+        SUM(amount) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as running_total
+    FROM transactions;
+            """, language="sql")
         
-        comparison_analytic = pd.DataFrame({
-            '功能': [
-                '行號',
-                '排名',
-                '密集排名',
-                '百分位排名',
-                '前一行',
-                '後一行',
-                '第一個值',
-                '最後一個值',
-                '累計總和',
-                '移動平均',
-                '分組',
-                '中位數'
-            ],
-            'Oracle': [
-                "ROW_NUMBER() OVER (...)",
-                "RANK() OVER (...)",
-                "DENSE_RANK() OVER (...)",
-                "PERCENT_RANK() OVER (...)",
-                "LAG(欄位, n) OVER (...)",
-                "LEAD(欄位, n) OVER (...)",
-                "FIRST_VALUE(欄位) OVER (...)",
-                "LAST_VALUE(欄位) OVER (...)",
-                "SUM(欄位) OVER (ORDER BY ...)",
-                "AVG(欄位) OVER (ROWS BETWEEN n PRECEDING AND CURRENT ROW)",
-                "NTILE(n) OVER (...)",
-                "MEDIAN(欄位)"
-            ],
-            'SQLite': [
-                "ROW_NUMBER() OVER (...)",
-                "RANK() OVER (...)",
-                "DENSE_RANK() OVER (...)",
-                "PERCENT_RANK() OVER (...)",
-                "LAG(欄位, n) OVER (...)",
-                "LEAD(欄位, n) OVER (...)",
-                "FIRST_VALUE(欄位) OVER (...)",
-                "LAST_VALUE(欄位) OVER (...)",
-                "SUM(欄位) OVER (ORDER BY ...)",
-                "AVG(欄位) OVER (ROWS BETWEEN n PRECEDING AND CURRENT ROW)",
-                "NTILE(n) OVER (...)",
-                "使用 PERCENTILE_CONT() 或自定義"
-            ]
-        })
-        st.dataframe(comparison_analytic, use_container_width=True)
+        with tab4:
+            st.markdown("#### 其他常用函數")
+            
+            comparison_other = pd.DataFrame({
+                '功能': [
+                    '條件判斷',
+                    '空值判斷',
+                    '數值轉字串',
+                    '字串轉數值',
+                    '四捨五入',
+                    '無條件進位',
+                    '無條件捨去',
+                    '絕對值',
+                    '隨機數',
+                    '序列/自增',
+                    'DECODE',
+                    '正則表達式'
+                ],
+                'Oracle': [
+                    "CASE WHEN ... THEN ... END",
+                    "NVL(欄位, 預設值)",
+                    "TO_CHAR(數值)",
+                    "TO_NUMBER(字串)",
+                    "ROUND(數值, 小數位)",
+                    "CEIL(數值)",
+                    "FLOOR(數值)",
+                    "ABS(數值)",
+                    "DBMS_RANDOM.VALUE",
+                    "序列.NEXTVAL",
+                    "DECODE(欄位, 值1, 結果1, ...)",
+                    "REGEXP_LIKE(), REGEXP_REPLACE()"
+                ],
+                'SQLite': [
+                    "CASE WHEN ... THEN ... END",
+                    "IFNULL(欄位, 預設值)",
+                    "CAST(數值 AS TEXT)",
+                    "CAST(字串 AS INTEGER/REAL)",
+                    "ROUND(數值, 小數位)",
+                    "使用 CAST 和運算",
+                    "CAST(數值 AS INTEGER)",
+                    "ABS(數值)",
+                    "RANDOM() / 18446744073709551616.0",
+                    "AUTOINCREMENT",
+                    "CASE WHEN ... THEN ... END",
+                    "不直接支援（需使用 LIKE）"
+                ]
+            })
+            st.dataframe(comparison_other, use_container_width=True)
+            
+            st.markdown("##### 📝 實際範例：")
+            st.code("""
+    -- Oracle: DECODE 函數
+    SELECT employee_name, 
+        DECODE(department, 'IT', '資訊部', 'HR', '人資部', '其他') as dept_name
+    FROM employees;
+
+    -- SQLite: 使用 CASE WHEN 替代
+    SELECT employee_name,
+        CASE department
+            WHEN 'IT' THEN '資訊部'
+            WHEN 'HR' THEN '人資部'
+            ELSE '其他'
+        END as dept_name
+    FROM employees;
+
+    -- Oracle: 序列
+    SELECT employee_seq.NEXTVAL FROM DUAL;
+
+    -- SQLite: 自增欄位
+    CREATE TABLE employees (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT
+    );
+            """, language="sql")
         
-        st.markdown("##### 📝 實際範例：")
-        st.code("""
--- Oracle & SQLite: 部門內薪資排名（語法相同！）
-SELECT 
-    employee_name,
-    department,
-    salary,
-    RANK() OVER (PARTITION BY department ORDER BY salary DESC) as dept_rank
-FROM employees;
+        with tab5:
+            st.markdown("#### 💡 常見場景轉換範例")
+            
+            st.markdown("##### 1️⃣ 分頁查詢")
+            st.code("""
+    -- Oracle: 使用 ROWNUM 或 OFFSET-FETCH
+    SELECT * FROM (
+        SELECT e.*, ROWNUM rn FROM employees e WHERE ROWNUM <= 20
+    ) WHERE rn > 10;
 
--- Oracle & SQLite: 累計總和（語法相同！）
-SELECT 
-    date,
-    amount,
-    SUM(amount) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as running_total
-FROM transactions;
-        """, language="sql")
-    
-    with tab4:
-        st.markdown("#### 其他常用函數")
-        
-        comparison_other = pd.DataFrame({
-            '功能': [
-                '條件判斷',
-                '空值判斷',
-                '數值轉字串',
-                '字串轉數值',
-                '四捨五入',
-                '無條件進位',
-                '無條件捨去',
-                '絕對值',
-                '隨機數',
-                '序列/自增',
-                'DECODE',
-                '正則表達式'
-            ],
-            'Oracle': [
-                "CASE WHEN ... THEN ... END",
-                "NVL(欄位, 預設值)",
-                "TO_CHAR(數值)",
-                "TO_NUMBER(字串)",
-                "ROUND(數值, 小數位)",
-                "CEIL(數值)",
-                "FLOOR(數值)",
-                "ABS(數值)",
-                "DBMS_RANDOM.VALUE",
-                "序列.NEXTVAL",
-                "DECODE(欄位, 值1, 結果1, ...)",
-                "REGEXP_LIKE(), REGEXP_REPLACE()"
-            ],
-            'SQLite': [
-                "CASE WHEN ... THEN ... END",
-                "IFNULL(欄位, 預設值)",
-                "CAST(數值 AS TEXT)",
-                "CAST(字串 AS INTEGER/REAL)",
-                "ROUND(數值, 小數位)",
-                "使用 CAST 和運算",
-                "CAST(數值 AS INTEGER)",
-                "ABS(數值)",
-                "RANDOM() / 18446744073709551616.0",
-                "AUTOINCREMENT",
-                "CASE WHEN ... THEN ... END",
-                "不直接支援（需使用 LIKE）"
-            ]
-        })
-        st.dataframe(comparison_other, use_container_width=True)
-        
-        st.markdown("##### 📝 實際範例：")
-        st.code("""
--- Oracle: DECODE 函數
-SELECT employee_name, 
-       DECODE(department, 'IT', '資訊部', 'HR', '人資部', '其他') as dept_name
-FROM employees;
+    -- 或 Oracle 12c+
+    SELECT * FROM employees 
+    ORDER BY employee_id 
+    OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
 
--- SQLite: 使用 CASE WHEN 替代
-SELECT employee_name,
-       CASE department
-           WHEN 'IT' THEN '資訊部'
-           WHEN 'HR' THEN '人資部'
-           ELSE '其他'
-       END as dept_name
-FROM employees;
+    -- SQLite: 使用 LIMIT OFFSET
+    SELECT * FROM employees 
+    ORDER BY employee_id 
+    LIMIT 10 OFFSET 10;
+            """, language="sql")
+            
+            st.markdown("##### 2️⃣ 取前 N 筆")
+            st.code("""
+    -- Oracle: 使用 ROWNUM 或 FETCH FIRST
+    SELECT * FROM employees WHERE ROWNUM <= 5;
 
--- Oracle: 序列
-SELECT employee_seq.NEXTVAL FROM DUAL;
+    -- 或 Oracle 12c+
+    SELECT * FROM employees FETCH FIRST 5 ROWS ONLY;
 
--- SQLite: 自增欄位
-CREATE TABLE employees (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT
-);
-        """, language="sql")
-    
-    with tab5:
-        st.markdown("#### 💡 常見場景轉換範例")
-        
-        st.markdown("##### 1️⃣ 分頁查詢")
-        st.code("""
--- Oracle: 使用 ROWNUM 或 OFFSET-FETCH
-SELECT * FROM (
-    SELECT e.*, ROWNUM rn FROM employees e WHERE ROWNUM <= 20
-) WHERE rn > 10;
+    -- SQLite: 使用 LIMIT
+    SELECT * FROM employees LIMIT 5;
+            """, language="sql")
+            
+            st.markdown("##### 3️⃣ 日期範圍查詢")
+            st.code("""
+    -- Oracle: 最近一個月
+    SELECT * FROM orders
+    WHERE order_date >= ADD_MONTHS(SYSDATE, -1);
 
--- 或 Oracle 12c+
-SELECT * FROM employees 
-ORDER BY employee_id 
-OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY;
+    -- SQLite: 最近一個月
+    SELECT * FROM orders
+    WHERE order_date >= DATE('now', '-1 month');
+            """, language="sql")
+            
+            st.markdown("##### 4️⃣ 字串聚合")
+            st.code("""
+    -- Oracle: 使用 LISTAGG
+    SELECT department,
+        LISTAGG(employee_name, ', ') WITHIN GROUP (ORDER BY employee_name) as employees
+    FROM employees
+    GROUP BY department;
 
--- SQLite: 使用 LIMIT OFFSET
-SELECT * FROM employees 
-ORDER BY employee_id 
-LIMIT 10 OFFSET 10;
-        """, language="sql")
-        
-        st.markdown("##### 2️⃣ 取前 N 筆")
-        st.code("""
--- Oracle: 使用 ROWNUM 或 FETCH FIRST
-SELECT * FROM employees WHERE ROWNUM <= 5;
+    -- SQLite: 使用 GROUP_CONCAT
+    SELECT department,
+        GROUP_CONCAT(employee_name, ', ') as employees
+    FROM employees
+    GROUP BY department;
+            """, language="sql")
+            
+            st.markdown("##### 5️⃣ DUAL 表")
+            st.code("""
+    -- Oracle: 使用 DUAL 執行計算
+    SELECT SYSDATE FROM DUAL;
+    SELECT 1 + 1 FROM DUAL;
 
--- 或 Oracle 12c+
-SELECT * FROM employees FETCH FIRST 5 ROWS ONLY;
-
--- SQLite: 使用 LIMIT
-SELECT * FROM employees LIMIT 5;
-        """, language="sql")
-        
-        st.markdown("##### 3️⃣ 日期範圍查詢")
-        st.code("""
--- Oracle: 最近一個月
-SELECT * FROM orders
-WHERE order_date >= ADD_MONTHS(SYSDATE, -1);
-
--- SQLite: 最近一個月
-SELECT * FROM orders
-WHERE order_date >= DATE('now', '-1 month');
-        """, language="sql")
-        
-        st.markdown("##### 4️⃣ 字串聚合")
-        st.code("""
--- Oracle: 使用 LISTAGG
-SELECT department,
-       LISTAGG(employee_name, ', ') WITHIN GROUP (ORDER BY employee_name) as employees
-FROM employees
-GROUP BY department;
-
--- SQLite: 使用 GROUP_CONCAT
-SELECT department,
-       GROUP_CONCAT(employee_name, ', ') as employees
-FROM employees
-GROUP BY department;
-        """, language="sql")
-        
-        st.markdown("##### 5️⃣ DUAL 表")
-        st.code("""
--- Oracle: 使用 DUAL 執行計算
-SELECT SYSDATE FROM DUAL;
-SELECT 1 + 1 FROM DUAL;
-
--- SQLite: 不需要 DUAL（直接 SELECT）
-SELECT DATE('now');
-SELECT 1 + 1;
-        """, language="sql")
+    -- SQLite: 不需要 DUAL（直接 SELECT）
+    SELECT DATE('now');
+    SELECT 1 + 1;
+            """, language="sql")
 
 st.markdown("---")
 st.markdown("""
