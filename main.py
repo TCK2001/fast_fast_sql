@@ -116,15 +116,15 @@ if st.session_state.tables:
                     st.rerun()
             
             st.markdown("**📊 資料預覽（前 5 行）：**")
-            st.dataframe(df.head(5), use_container_width=True, height=200)
+            st.dataframe(df.head(5), width='stretch', height=200)
             
             with st.expander("ℹ️ 欄位詳細資訊"):
                 col_info = pd.DataFrame({
-                    '欄位名稱': df.columns,
-                    '資料型態': df.dtypes.values,
-                    '缺失值數量': df.isnull().sum().values
+                    '欄位名稱': df.columns.astype(str),
+                    '資料型態': df.dtypes.astype(str),          
+                    '缺失值數量': df.isnull().sum().astype(int)
                 })
-                st.dataframe(col_info, use_container_width=True)
+                st.dataframe(col_info, width='stretch')
     
     st.markdown("---")
     
@@ -143,7 +143,7 @@ if st.session_state.tables:
     
     col1, col2, col3 = st.columns([2, 1, 1])
     with col1:
-        run_button = st.button("▶️ 執行查詢", type="primary", use_container_width=True)
+        run_button = st.button("▶️ 執行查詢", type="primary", width='stretch')
     
     if run_button:
         if sql_query.strip():
@@ -163,7 +163,7 @@ if st.session_state.tables:
                     
                     if len(result_df) > 0:
                         st.markdown("#### 📊 查詢結果")
-                        st.dataframe(result_df, use_container_width=True, height=400)
+                        st.dataframe(result_df, width='stretch', height=400)
                         
                         col1, col2, col3 = st.columns(3)
                         with col1:
@@ -179,7 +179,7 @@ if st.session_state.tables:
                             data=csv,
                             file_name="query_result.csv",
                             mime="text/csv",
-                            use_container_width=True
+                            width='stretch'
                         )
                     else:
                         st.warning("⚠️ 查詢結果為空")
@@ -315,7 +315,7 @@ with st.expander("📚 Oracle vs SQLite 語法比較參考", expanded=False):
                 "DATE('now', 'start of month')"
             ]
         })
-        st.dataframe(comparison_date, use_container_width=True, hide_index=True)
+        st.dataframe(comparison_date, width='stretch', hide_index=True)
         
         st.code("""-- Oracle: 最近 30 天
 SELECT * FROM employees WHERE hire_date >= SYSDATE - 30;
@@ -342,7 +342,7 @@ SELECT * FROM employees WHERE hire_date >= DATE('now', '-30 days');""", language
                 'IFNULL(欄位, 預設值)'
             ]
         })
-        st.dataframe(comparison_string, use_container_width=True, hide_index=True)
+        st.dataframe(comparison_string, width='stretch', hide_index=True)
         
         st.code("""-- Oracle: NULL 處理
 SELECT NVL(phone, '未提供') FROM employees;
@@ -369,7 +369,7 @@ SELECT IFNULL(phone, '未提供') FROM employees;""", language="sql")
                 'NTILE(n) OVER (...)'
             ]
         })
-        st.dataframe(comparison_window, use_container_width=True, hide_index=True)
+        st.dataframe(comparison_window, width='stretch', hide_index=True)
         
         st.info("✅ 視窗函數在 Oracle 和 SQLite 中語法完全相同！")
         
@@ -400,7 +400,7 @@ FROM employees;""", language="sql")
                 '使用 CASE WHEN 替代'
             ]
         })
-        st.dataframe(comparison_other, use_container_width=True, hide_index=True)
+        st.dataframe(comparison_other, width='stretch', hide_index=True)
         
         st.code("""-- Oracle: DECODE
 SELECT DECODE(dept, 'IT', '資訊部', 'HR', '人資部', '其他') FROM emp;
